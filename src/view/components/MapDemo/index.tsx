@@ -27,11 +27,9 @@ import {
 } from "./initial-elements";
 import SideBar from "../SideBar";
 import ContextMenu from "../ContextMenu";
-import { Button, ButtonDemo } from "./styles";
+import { Button } from "./styles";
 import TextUpdaterNode from "../TextUpdater";
 import FormAdd from "../FormAdd";
-import { useNavigate } from "react-router-dom";
-import { DEMO_ROUTE } from "../../routes/UserRoutes/routes";
 
 const mapState = {
   center: [55.751574, 37.573856],
@@ -43,16 +41,14 @@ const onInit = (reactFlowInstance: any) =>
 
 const MapComponents = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const navigate = useNavigate();
-
   const reactFlowWrapper = useRef(null);
   const nodesRedux = useSelector(selectors.nodes.SelectNodes);
   const edgesRedux = useSelector(selectors.edges.SelectEdges);
   const selectNode = useSelector(selectors.oneNode.SelectOneNode);
 
   const [loading, setLoading] = useState(false);
-  const [nodes, setNodes, onNodesChange] = useNodesState(nodesRedux);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(edgesRedux);
+  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [idNde, setIdnode] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -79,10 +75,6 @@ const MapComponents = () => {
   //   (connection: Connection) => setEdges((eds) => addEdge(connection, eds)),
   //   [setEdges]
   // );
-
-  const navigateToDemo = () => {
-    navigate(DEMO_ROUTE);
-  };
 
   const onContextMenu = (e: any) => {
     let attrId = e.target.attributes[1].value;
@@ -147,12 +139,6 @@ const MapComponents = () => {
       >
         Create
       </Button>
-      <ButtonDemo
-        onClick={navigateToDemo}
-        style={{ position: "absolute", top: "0", right: 0, zIndex: 12312321 }}
-      >
-        Demo
-      </ButtonDemo>
       <ReactFlow
         nodeTypes={nodeTypes}
         nodes={nodes}

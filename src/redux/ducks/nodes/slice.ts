@@ -11,6 +11,14 @@ const nodes = createSlice({
       if (payload) {
       }
     },
+
+    changeNodes(state, { payload }: PayloadAction<NodesItem[]>) {
+      if (payload) {
+        state = payload;
+        return state;
+      }
+    },
+
     // deleteTags(
     //   state,
     //   { payload }: PayloadAction<{ id: number; name: string }>
