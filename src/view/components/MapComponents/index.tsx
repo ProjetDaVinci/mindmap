@@ -32,6 +32,7 @@ import TextUpdaterNode from "../TextUpdater";
 import FormAdd from "../FormAdd";
 import { useNavigate } from "react-router-dom";
 import { DEMO_ROUTE } from "../../routes/UserRoutes/routes";
+import { Menu } from "../../UI/icons";
 
 const mapState = {
   center: [55.751574, 37.573856],
@@ -149,10 +150,11 @@ const MapComponents = () => {
       </Button>
       <ButtonDemo
         onClick={navigateToDemo}
-        style={{ position: "absolute", top: "0", right: 0, zIndex: 12312321 }}
+        style={{ position: "absolute", top: 60, zIndex: 12312321 }}
       >
         Demo
       </ButtonDemo>
+
       <ReactFlow
         nodeTypes={nodeTypes}
         nodes={nodes}
@@ -196,7 +198,7 @@ const MapComponents = () => {
         <Controls />
         <Background color="red" gap={16} />
       </ReactFlow>
-      {/* <SideBar /> */}
+
       <Modal
         isOpen={setVisible}
         style={{

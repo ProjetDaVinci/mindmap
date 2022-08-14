@@ -18,6 +18,7 @@ import { useState } from "react";
 import FormAdd from "../FormAdd";
 import { useNavigate } from "react-router-dom";
 import { Exit } from "../../UI/icons";
+import FormProject from "../FormProject";
 
 const SideBar = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -26,12 +27,18 @@ const SideBar = () => {
   const [setVisible, setIsVisible] = useState(false);
   const isToken = useSelector(selectors.auth.SelectToken);
 
+  const project = useSelector(selectors.project.SelectProject);
+
   const changeClose = () => {
     setIsVisible(false);
   };
 
   const signIn = () => {
     // navigate(LOGIN_ROUTE);
+  };
+
+  const onDelete = (id: number) => {
+    dispatch(actions.project.deleteProject(id));
   };
 
   const signOut = () => {
@@ -44,10 +51,10 @@ const SideBar = () => {
   };
 
   return (
-    <HeaderContainer>
+    <>
       <Sidebard>
         <RelativeContainer>
-          {/* <Container>
+          <Container>
             {isToken ? (
               <FlexContainer>
                 <Button onClick={() => setIsVisible(!setVisible)}>
@@ -63,33 +70,15 @@ const SideBar = () => {
                 </AlertText>
               </>
             )}
-          </Container> */}
-          <aside>
-            <div className="description">
-              You can drag these nodes to the pane on the right.
-            </div>
-            <div
-              className="dndnode input"
-              onDragStart={(event) => onDragStart(event, "input")}
-              draggable
-            >
-              Input Node
-            </div>
-            <div
-              className="dndnode"
-              onDragStart={(event) => onDragStart(event, "default")}
-              draggable
-            >
-              Default Node
-            </div>
-            <div
-              className="dndnode output"
-              onDragStart={(event) => onDragStart(event, "output")}
-              draggable
-            >
-              Output Node
-            </div>
-          </aside>
+            {project.map((point, key) => (
+              <Point
+                title={point.name}
+                key={key}
+                id={point.id}
+                onDelete={onDelete}
+              />
+            ))}
+          </Container>
         </RelativeContainer>
       </Sidebard>
       <Modal
@@ -113,9 +102,9 @@ const SideBar = () => {
         onRequestClose={changeClose}
         // key={cardId}
       >
-        {/* <FormAdd setIsVisible={setIsVisible} /> */}
+        <FormProject setIsVisible={setIsVisible} />
       </Modal>
-    </HeaderContainer>
+    </>
   );
 };
 

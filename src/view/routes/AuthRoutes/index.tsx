@@ -1,11 +1,17 @@
 import { useEffect } from "react";
-import { Route, Router, Routes } from "react-router-dom";
+import { Route, Router, Routes, useNavigate } from "react-router-dom";
 import { AppWrapper } from "../../components";
 import LoginPage from "./LoginPage";
 import RegPage from "./RegPage";
 import { LOGIN_ROUTE, REGISTER_ROUTE } from "./routes";
 import { Container } from "./styles";
-const UserScreen = () => {
+const AuthScreen = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    navigate(LOGIN_ROUTE);
+  }, []);
+
   return (
     <Routes>
       <Route path={LOGIN_ROUTE} element={<LoginPage />} />
@@ -14,4 +20,4 @@ const UserScreen = () => {
   );
 };
 
-export default UserScreen;
+export default AuthScreen;

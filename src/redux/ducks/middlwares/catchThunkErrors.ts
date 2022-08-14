@@ -1,5 +1,3 @@
 import { AxiosError } from "axios";
 
-export const ThunkErrorsHandler = (err: AxiosError) => {
-  console.log("request error", err);
-};
+export const ThunkErrorsHandler = (err: AxiosError) => {};

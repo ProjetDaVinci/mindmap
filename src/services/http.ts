@@ -8,10 +8,6 @@ export class Http {
 
   setAuthorizationHeader(token: string): void {
     this._axios.defaults.headers.common.Authorization = `Bearer ${token}`;
-    console.log(
-      "this._axios.defaults.headers.common.Authorization",
-      this._axios.defaults.headers.common.Authorization
-    );
   }
 
   unsetAuthorizationHeader(): void {
