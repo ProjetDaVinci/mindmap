@@ -4,7 +4,6 @@ import { MarkerType } from "react-flow-renderer";
 export const nodes = [
   {
     id: "1",
-    type: "textUpdater",
     data: {
       label: "Another default node",
       //   label: (

@@ -44,9 +44,11 @@ const onInit = (reactFlowInstance: any) =>
 const MapComponents = () => {
   const dispatch = useDispatch<AppDispatch>();
   const reactFlowWrapper = useRef(null);
+  const nodesRedux = useSelector(selectors.nodes.SelectNodes);
+  const selectNode = useSelector(selectors.oneNode.SelectOneNode);
 
   const [loading, setLoading] = useState(false);
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+  const [nodes, setNodes, onNodesChange] = useNodesState(nodesRedux);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [idNde, setIdnode] = useState(null);
@@ -94,34 +96,28 @@ const MapComponents = () => {
   const changeLabel = () => {
     const findItem = nodes.find((value) => value.id === idNde);
     if (findItem) {
+      setNewName(findItem.data.label);
+      dispatch(actions.oneNode.changeNode(findItem));
+      setIsVisible(true);
     }
 
     if (newName.length > 0) {
       if (findItem) {
         console.log("newName", newName);
-        setNewName(findItem.data.label);
-        setIsVisible(true);
+
         setNodes((els: any) =>
           els.map((element: { id: number; data: { label: string } }) =>
             element.id === idNde
               ? {
                   ...element,
-                  data: { label: newName },
+                  data: { label: selectNode.data.label },
                 }
               : element
           )
         );
       }
     }
-    // findItem.data.label = "хуй";
 
-    // setNodes((els: any) => {
-    //   findItem.data.label = "хуй";
-    //   console.log("====================================");
-    //   console.log(els);
-    //   console.log("====================================");
-    //   return els;
-    // };
     setIsOpen(false);
   };
 

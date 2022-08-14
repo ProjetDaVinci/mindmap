@@ -22,10 +22,16 @@ type FormModal = {
 const FormAdd: FC<FormModal> = ({ setIsVisible, setNewName, inititalName }) => {
   const dispatch = useDispatch<AppDispatch>();
 
+  // const selectNode = useSelector(selectors.oneNode.SelectOneNode);
   const onSubmit = ({ input }: FormRes) => {
     setIsVisible(false);
+    dispatch(actions.oneNode.changeLabel({ text: input }));
     setNewName(input);
   };
+
+  console.log("====================================");
+  console.log(inititalName);
+  console.log("====================================");
 
   return (
     <div className="text-black">
