@@ -4,12 +4,23 @@ import { Close } from "../icons";
 import { Container, Content, TextContainer, Title } from "./styles";
 import { PropsEvent, PropsPoint } from "./types";
 
-const Point = ({ title, onDelete, id }: PropsPoint & PropsEvent) => {
+const Point = ({
+  title,
+  onDelete,
+  id,
+  onPlacemarkClick,
+}: PropsPoint & PropsEvent) => {
   const isToken = useSelector(selectors.auth.SelectToken);
+  const selected = useSelector(selectors.selectedProject.SelectProject);
 
+  const onClick = (id: number) => {
+    onPlacemarkClick(id);
+  };
   return (
-    <Container>
-      <Content>
+    <Container
+      style={{ backgroundColor: selected.id === id ? "red" : undefined }}
+    >
+      <Content onClick={() => onClick(id)}>
         <TextContainer>
           <Title>{title}</Title>
         </TextContainer>

@@ -8,3 +8,7 @@ export type MapType = {
 export type NewPoint = {
   coords: number[];
 };
+
+export enum EdgeType {
+  buttonedge = "buttonedge",
+}

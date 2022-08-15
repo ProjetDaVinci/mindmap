@@ -1,9 +1,10 @@
 export type PropsPoint = {
   title: string;
   id: number;
+  // selected: boolean;
 };
 
 export type PropsEvent = {
-  // onPlacemarkClick: (obj: PropsPoint) => void;
+  onPlacemarkClick: (id: number) => void;
   onDelete: (id: number) => void;
 };

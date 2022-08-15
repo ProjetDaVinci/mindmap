@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../../redux";
-import { actions, selectors } from "../../../redux/ducks";
+import { actions, selectors, thunks } from "../../../redux/ducks";
 import { Point } from "../../UI";
 import { MapType } from "../MapComponents/types";
 import Modal from "react-modal";
@@ -14,11 +14,12 @@ import {
   RelativeContainer,
   Sidebard,
 } from "./styles";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FormAdd from "../FormAdd";
 import { useNavigate } from "react-router-dom";
 import { Exit } from "../../UI/icons";
 import FormProject from "../FormProject";
+import { PropsPoint } from "../../UI/Point/types";
 
 const SideBar = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -27,27 +28,56 @@ const SideBar = () => {
   const [setVisible, setIsVisible] = useState(false);
   const isToken = useSelector(selectors.auth.SelectToken);
 
-  const project = useSelector(selectors.project.SelectProject);
+  const project = useSelector(selectors.projectNew2.SelectProject);
+  const stateSelect = useSelector(selectors.selectedProject.SelectProject);
+  const projectId = useSelector(
+    selectors.projectNew2.selectItemId(stateSelect.id)
+  );
 
   const changeClose = () => {
     setIsVisible(false);
   };
+
+  useEffect(() => {
+    dispatch(thunks.projectNew2.getListProjects());
+  }, []);
 
   const signIn = () => {
     // navigate(LOGIN_ROUTE);
   };
 
   const onDelete = (id: number) => {
-    dispatch(actions.project.deleteProject(id));
+    dispatch(thunks.projectNew2.deleteProject(id));
   };
+
+  console.log(projectId?.structure);
 
   const signOut = () => {
     dispatch(actions.auth.signOut());
   };
 
-  const onDragStart = (event: any, nodeType: any) => {
-    event.dataTransfer.setData("application/reactflow", nodeType);
-    event.dataTransfer.effectAllowed = "move";
+  const onClickProject = (id: number) => {
+    const find = project && project?.find((select) => select.id === id);
+    if (find) {
+      dispatch(
+        actions.selectedProject.addProject({
+          id: find.id,
+          sort: find.sort,
+          structure: find.structure,
+          company_id: find.company_id,
+          name: find.name,
+          qr: find.qr,
+          selected: true,
+        })
+      );
+    }
+    // dispatch(thunks.projectNew2.deleteProject(obj.id));
+  };
+
+  const onAdd = () => {
+    setIsVisible(!setVisible);
+    dispatch(actions.edges.deleteEdges([]));
+    dispatch(actions.nodes.deleteNode([]));
   };
 
   return (
@@ -57,24 +87,24 @@ const SideBar = () => {
           <Container>
             {isToken ? (
               <FlexContainer>
-                <Button onClick={() => setIsVisible(!setVisible)}>
-                  Добавитть
-                </Button>
+                <Button onClick={onAdd}>Создать проект</Button>
                 <Exit onClick={signOut} fill={"black"} />
               </FlexContainer>
             ) : (
               <>
-                <Button onClick={signIn}>Войти</Button>
+                <Button onClick={signIn}>Создать проект</Button>
                 <AlertText>
-                  Чтобы добавить или удалить точки войдите в систему
+                  Чтобы добавить или удалить проект войдите в систему
                 </AlertText>
               </>
             )}
-            {project.map((point, key) => (
+            {project?.map((point, key) => (
               <Point
                 title={point.name}
                 key={key}
                 id={point.id}
+                // selected={point.selected}
+                onPlacemarkClick={onClickProject}
                 onDelete={onDelete}
               />
             ))}

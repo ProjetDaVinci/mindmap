@@ -16,10 +16,5 @@ export type ProjectItems = {
   company_id: string;
   name: string;
   qr: string;
-};
-
-export type ProjectState = {
-  project: ProjectItems[];
-  edges: Edge[];
-  nodes: NodesItem[];
+  selected: boolean;
 };

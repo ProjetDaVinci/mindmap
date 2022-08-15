@@ -1,7 +1,9 @@
+import { AnyAction } from "redux";
 import { NodesItem } from "./types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Node } from "react-flow-renderer";
 
-const initialState: NodesItem[] = [] as NodesItem[];
+const initialState: Node[] = [] as Node[];
 
 const nodes = createSlice({
   initialState,
@@ -12,10 +14,24 @@ const nodes = createSlice({
       }
     },
 
-    changeNodes(state, { payload }: PayloadAction<NodesItem[]>) {
+    changeNodes(state, { payload }: PayloadAction<Node[]>) {
       if (payload) {
         state = payload;
         return state;
+      }
+    },
+
+    addNodes(state, { payload }: PayloadAction<Node>) {
+      if (payload) {
+        state.push(payload);
+        return state;
+      }
+    },
+
+    deleteNode(state, { payload }: PayloadAction<[]>) {
+      if (payload) {
+        state = [];
+        return initialState;
       }
     },
 

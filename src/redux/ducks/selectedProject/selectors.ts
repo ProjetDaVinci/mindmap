@@ -1,11 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { rootState } from "../..";
 
-export const SelectProject = (state: rootState) => state.project.project;
-
-export const SelectEdges = (state: rootState) => state.project.edges;
-
-export const SelectNodes = (state: rootState) => state.project.nodes;
+export const SelectProject = (state: rootState) => state.selectedProject;
 
 // // export const SelectFilter = (state: rootState) => state.tags;
 // export const selectTagsMass = (id: number) =>

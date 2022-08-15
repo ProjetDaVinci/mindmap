@@ -16,10 +16,33 @@ export type ProjectItems = {
   company_id: string;
   name: string;
   qr: string;
+  selected: boolean;
+};
+
+export type ProjectItemsRes = {
+  id: number;
+  sort: number;
+  structure: string;
+  company_id: string;
+  name: string;
+  qr: string;
 };
 
 export type ProjectState = {
-  project: ProjectItems[];
+  project: ProjectItemsRes[];
   edges: Edge[];
   nodes: NodesItem[];
+};
+
+export type ProjectRes = {
+  count: number;
+  data: ProjectItemsRes[];
+  message: string;
+  status: boolean;
+};
+
+export type ProjectCreateRes = {
+  message: "success";
+  project: ProjectItems;
+  status: boolean;
 };

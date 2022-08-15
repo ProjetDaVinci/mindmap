@@ -9,7 +9,7 @@ import React from "react";
 import { AppDispatch } from "../../../redux";
 import { Close } from "../../UI/icons";
 import { Input, InputColumn } from "./styles";
-import { actions, selectors } from "../../../redux/ducks";
+import { actions, selectors, thunks } from "../../../redux/ducks";
 import { NodesItem } from "../../../redux/ducks/nodes/types";
 type FormRes = {
   input: string;
@@ -28,7 +28,7 @@ const FormProject: FC<FormModal> = ({ setIsVisible }) => {
   const onSubmit = ({ input }: FormRes) => {
     setIsVisible(false);
     if (input.length !== 3) {
-      dispatch(actions.project.addProject({ text: input }));
+      dispatch(thunks.projectNew2.createProject(input));
     } else {
       alert("Введите не менее 3 символов");
     }

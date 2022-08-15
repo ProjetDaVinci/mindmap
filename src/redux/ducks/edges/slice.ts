@@ -1,16 +1,22 @@
 import { EdgesItem } from "./types";
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { AnyAction, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Edge } from "react-flow-renderer";
 
-const initialState: EdgesItem[] = [] as EdgesItem[];
+const initialState: Edge[] = [] as Edge[];
 
 const edges = createSlice({
   initialState,
   name: "edges",
   reducers: {
-    changeEdges(state, { payload }: PayloadAction<EdgesItem[]>) {
+    changeEdges(state, { payload }: PayloadAction<Edge[]>) {
       if (payload) {
         state = payload;
         return state;
+      }
+    },
+    deleteEdges(state, { payload }: PayloadAction<[]>) {
+      if (payload) {
+        return initialState;
       }
     },
   },

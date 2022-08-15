@@ -3,7 +3,7 @@ import React, { memo } from "react";
 type ContextType = {
   isOpen: boolean;
   position: { x: number; y: number };
-  actions: { label: string; effect: () => void }[];
+  actions: { label: string; effect: (e: any) => void }[];
   onMouseLeave: () => void;
 };
 

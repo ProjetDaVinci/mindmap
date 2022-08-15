@@ -89,7 +89,7 @@ const MapComponents = () => {
     setNodes((els: any) =>
       els.filter((element: { id: number }) => element.id !== idNde)
     );
-    dispatch(actions.nodes.changeNodes(nodes));
+    // dispatch(actions.nodes.changeNodes(nodes));
 
     setIsOpen(false);
   };
@@ -99,10 +99,10 @@ const MapComponents = () => {
 
     if (findItem) {
       setNewName(findItem.data.label);
-      dispatch(actions.oneNode.changeNode(findItem));
+      // dispatch(actions.oneNode.changeNode(findItem));
       setIsVisible(true);
     }
-    dispatch(actions.nodes.changeNodes(nodes));
+    // dispatch(actions.nodes.changeNodes(nodes));
 
     setIsOpen(false);
   };
@@ -122,7 +122,7 @@ const MapComponents = () => {
       // sourcePosition: "right",
     };
     setNodes((es) => es.concat(newNode));
-    dispatch(actions.nodes.changeNodes(nodes));
+    // dispatch(actions.nodes.changeNodes(nodes));
   };
 
   const changeClose = () => {

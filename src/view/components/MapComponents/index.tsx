@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { MapType, NewPoint } from "./types";
+import { EdgeType, MapType, NewPoint } from "./types";
 import { useDispatch, useSelector } from "react-redux";
-import { actions, selectors } from "../../../redux/ducks";
+import { actions, selectors, thunks } from "../../../redux/ducks";
 import { AppDispatch } from "../../../redux";
 import Modal from "react-modal";
 
@@ -33,6 +33,9 @@ import FormAdd from "../FormAdd";
 import { useNavigate } from "react-router-dom";
 import { DEMO_ROUTE } from "../../routes/UserRoutes/routes";
 import { Menu } from "../../UI/icons";
+import { ButtonEdge } from "../ButtonEdge";
+import { NodesItem } from "../../../redux/ducks/nodes/types";
+import FormProject from "../FormProject";
 
 const mapState = {
   center: [55.751574, 37.573856],
@@ -49,6 +52,8 @@ const MapComponents = () => {
   const reactFlowWrapper = useRef(null);
   const nodesRedux = useSelector(selectors.nodes.SelectNodes);
   const edgesRedux = useSelector(selectors.edges.SelectEdges);
+  // const selectedProject = useSelector(selectors.projectNew2.selectSelected());
+  const projects = useSelector(selectors.projectNew2.selectLastProject());
   const selectNode = useSelector(selectors.oneNode.SelectOneNode);
 
   const [loading, setLoading] = useState(false);
@@ -58,6 +63,10 @@ const MapComponents = () => {
   const [idNde, setIdnode] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [setVisible, setIsVisible] = useState(false);
+  const [isOpenProject, setIsOpenProject] = useState(false);
+  const [setVisibleProject, setIsVisibleProject] = useState(false);
+  const [buttonVisible, setButtonVisible] = useState(false);
+  const [buttonPosition, setButtonPosition] = useState({ x: 0, y: 0 });
   const [oldName, setNewName] = useState("");
 
   const nodeTypes = useMemo(() => ({ textUpdater: TextUpdaterNode }), []);
@@ -67,19 +76,18 @@ const MapComponents = () => {
   //   event.dataTransfer.dropEffect = "move";
   // }, []);
 
-  const onConnect = useCallback(
-    (params: any) => setEdges((eds) => addEdge(params, eds)),
-    []
-  );
-  // const onEdgesChange = useCallback(
-  //   (changes: EdgeChange[]) =>
-  //     setEdges((eds) => applyEdgeChanges(changes, eds)),
-  //   [setEdges]
-  // );
-  // const onConnect = useCallback(
-  //   (connection: Connection) => setEdges((eds) => addEdge(connection, eds)),
-  //   [setEdges]
-  // );
+  const onConnect = useCallback((params: any) => {
+    setEdges((eds) => addEdge({ ...params, type: "buttonedge" }, eds));
+    dispatch(actions.edges.changeEdges(edges));
+  }, []);
+
+  // useEffect(() => {
+  //   dispatch(actions.edges.changeEdges(edges));
+  // }, [onEdgesChange, edges]);
+
+  // useEffect(() => {
+  //   dispatch(actions.nodes.changeNodes(nodes));
+  // }, [onNodesChange, nodes]);
 
   const navigateToDemo = () => {
     navigate(DEMO_ROUTE);
@@ -103,8 +111,11 @@ const MapComponents = () => {
     setIsOpen(false);
   };
 
-  const changeLabel = () => {
-    const findItem = nodes.find((value) => value.id === idNde);
+  const changeLabel = (e: any) => {
+    let attrId = e.target.attributes[1].value;
+    console.log({ x: e.target, y: e.target });
+
+    const findItem = nodes.find((value) => value.id === attrId);
 
     if (findItem) {
       setNewName(findItem.data.label);
@@ -123,19 +134,60 @@ const MapComponents = () => {
   };
 
   const createNew = () => {
-    const newNode = {
+    const newNode: NodesItem = {
       id: (nodes.length + 1).toString(),
-      // type: "customnode",
-      data: { label: "default text", type: "node" },
+      data: { label: "default text" },
       position: { x: 30, y: 20 },
-      // sourcePosition: "right",
+      width: 150,
+      height: 38,
     };
-    setNodes((es) => es.concat(newNode));
-    dispatch(actions.nodes.changeNodes(nodes));
+    setNodes((prevState) => [...prevState, newNode]);
+    dispatch(actions.nodes.addNodes(newNode));
   };
 
   const changeClose = () => {
     setIsVisible(false);
+  };
+
+  const changeCloseProjectModal = () => {
+    setIsVisibleProject(false);
+  };
+
+  const saveChange = () => {
+    dispatch(actions.nodes.changeNodes(nodes));
+    dispatch(actions.edges.changeEdges(edges));
+
+    console.log("====================================");
+    // console.log(selectedProject);
+    console.log("====================================");
+    // if (selectedProject === undefined) {
+    //   setIsVisibleProject(true);
+    //   dispatch(
+    //     thunks.projectNew2.createProject(projects?.name || "новый проект")
+    //   );
+    // }
+  };
+
+  // const edgeTypes = {
+  //   buttonedge: ButtonEdge,
+  // };
+
+  const edgeTypes = {
+    [EdgeType.buttonedge]: ButtonEdge,
+  };
+  const openButton = (e: any) => {
+    let attrId = e.target.attributes[1].value;
+
+    console.log(attrId);
+    const findItem = nodes.find((value) => value.id === attrId);
+    console.log({ x: e.clientX, y: e.clientY });
+
+    setButtonPosition({ x: e.clientX, y: e.clientY } || { x: 0, y: 0 });
+    setButtonVisible(true);
+  };
+
+  const closeButton = () => {
+    setButtonVisible(false);
   };
 
   return !loading ? (
@@ -155,6 +207,13 @@ const MapComponents = () => {
         Demo
       </ButtonDemo>
 
+      <Button
+        onClick={saveChange}
+        style={{ position: "absolute", top: 120, zIndex: 12312321 }}
+      >
+        Save
+      </Button>
+
       <ReactFlow
         nodeTypes={nodeTypes}
         nodes={nodes}
@@ -164,12 +223,31 @@ const MapComponents = () => {
         onNodeContextMenu={onContextMenu}
         onLoad={onLoad}
         onConnect={onConnect}
+        // onMouseOver={change}
+        onNodeMouseEnter={openButton}
+        onNodeMouseLeave={closeButton}
+        onNodeDoubleClick={changeLabel}
+        edgeTypes={edgeTypes}
         fitView
         attributionPosition="top-right"
         style={{
           backgroundColor: "#1a2035",
         }}
       >
+        {buttonVisible ? (
+          <ButtonDemo
+            // onClick={navigateToDemo}
+            style={{
+              position: "absolute",
+              left: buttonPosition.x,
+              top: buttonPosition.y,
+              zIndex: 12312321,
+            }}
+          >
+            Кнопка
+          </ButtonDemo>
+        ) : null}
+
         <ContextMenu
           isOpen={isOpen}
           position={position}
@@ -225,6 +303,29 @@ const MapComponents = () => {
           setNewName={setNewName}
           setNodes={setNodes}
         />
+      </Modal>
+      <Modal
+        isOpen={setVisibleProject}
+        style={{
+          content: {
+            zIndex: 999999999999,
+            maxWidth: 500,
+            margin: "0 auto",
+            padding: 20,
+            // minHeight: "55%",
+            // height: "fit-content",
+          },
+        }}
+        ariaHideApp={false}
+        // className={styles.overlay}
+        overlayClassName="Overlay"
+        shouldCloseOnEsc
+        contentLabel="onRequestClose Example"
+        shouldCloseOnOverlayClick={true}
+        onRequestClose={changeCloseProjectModal}
+        // key={cardId}
+      >
+        <FormProject setIsVisible={setIsVisibleProject} />
       </Modal>
       {/* </ReactFlowProvider> */}
       {/* </div> */}

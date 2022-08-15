@@ -1,14 +1,15 @@
 import { TagsItem } from "./types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { NodesItem } from "../nodes/types";
+import { Node } from "react-flow-renderer";
 
-const initialState: NodesItem = {} as NodesItem;
+const initialState: Node = {} as Node;
 
 const oneNode = createSlice({
   initialState,
   name: "oneNode",
   reducers: {
-    changeNode(state, { payload }: PayloadAction<NodesItem>) {
+    changeNode(state, { payload }: PayloadAction<Node>) {
       if (payload) {
         state = payload;
         return state;
