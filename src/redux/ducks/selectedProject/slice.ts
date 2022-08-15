@@ -16,6 +16,12 @@ const selectedProject = createSlice({
         return payload;
       }
     },
+    clear(state, { payload }: PayloadAction<number>) {
+      if (payload) {
+        // state = payload;
+        return initialState;
+      }
+    },
   },
 });
 

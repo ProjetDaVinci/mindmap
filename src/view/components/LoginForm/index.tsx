@@ -32,6 +32,7 @@ const LoginForm: FC = () => {
       );
       dispatch(actions.edges.deleteEdges([]));
       dispatch(actions.nodes.deleteNode([]));
+      dispatch(actions.selectedProject.clear(1));
     }
   };
 
