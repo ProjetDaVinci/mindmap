@@ -55,6 +55,7 @@ const MapComponents = () => {
   // const selectedProject = useSelector(selectors.projectNew2.selectSelected());
   const projects = useSelector(selectors.projectNew2.selectLastProject());
   const selectNode = useSelector(selectors.oneNode.SelectOneNode);
+  const stateSelect = useSelector(selectors.selectedProject.SelectProject);
 
   const [loading, setLoading] = useState(false);
   const [nodes, setNodes, onNodesChange] = useNodesState(nodesRedux);
@@ -157,15 +158,13 @@ const MapComponents = () => {
     dispatch(actions.nodes.changeNodes(nodes));
     dispatch(actions.edges.changeEdges(edges));
 
-    console.log("====================================");
     // console.log(selectedProject);
-    console.log("====================================");
-    // if (selectedProject === undefined) {
-    //   setIsVisibleProject(true);
-    //   dispatch(
-    //     thunks.projectNew2.createProject(projects?.name || "новый проект")
-    //   );
-    // }
+    if (stateSelect === undefined) {
+      setIsVisibleProject(true);
+      dispatch(
+        thunks.projectNew2.createProject(projects?.name || "новый проект")
+      );
+    }
   };
 
   // const edgeTypes = {

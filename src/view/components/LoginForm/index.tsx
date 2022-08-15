@@ -30,6 +30,8 @@ const LoginForm: FC = () => {
           password_hash: password,
         })
       );
+      dispatch(actions.edges.deleteEdges([]));
+      dispatch(actions.nodes.deleteNode([]));
     }
   };
 

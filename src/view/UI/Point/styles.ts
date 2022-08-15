@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-  color: black;
+  color: #fff;
   width: 100%;
   height: 100%;
   border-bottom: 1px solid #dadada;
@@ -19,7 +19,7 @@ export const Container = styled.div`
 `;
 
 export const Title = styled.h2`
-  color: black;
+  color: #fff;
 `;
 
 export const Content = styled.div`

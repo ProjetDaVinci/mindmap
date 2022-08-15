@@ -88,7 +88,7 @@ const SideBar = () => {
             {isToken ? (
               <FlexContainer>
                 <Button onClick={onAdd}>Создать проект</Button>
-                <Exit onClick={signOut} fill={"black"} />
+                <Exit onClick={signOut} fill={"#fff"} />
               </FlexContainer>
             ) : (
               <>

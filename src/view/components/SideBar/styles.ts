@@ -7,7 +7,7 @@ export const HeaderContainer = styled.div`
 export const Sidebard = styled.div`
   position: absolute;
   z-index: 99999999;
-  background-color: #fff;
+  background-image: linear-gradient(195deg, #323a54, #1a2035) !important;
   border-radius: 12px;
   overflow: overlay;
   width: 20vw;
@@ -24,11 +24,13 @@ export const Container = styled.div`
 
 export const Button = styled.button`
   z-index: 999999999;
-  background-color: #fff;
+  color: #fff;
+  background-image: linear-gradient(195deg, #ec407a, #d81b60);
   right: 20px;
   top: 10px;
   width: 100%;
   height: 50px;
+  border: none;
   border-radius: 12px;
   transition: all 0.2s;
   cursor: pointer;

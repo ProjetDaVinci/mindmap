@@ -18,13 +18,19 @@ const Point = ({
   };
   return (
     <Container
-      style={{ backgroundColor: selected.id === id ? "red" : undefined }}
+      style={{
+        backgroundImage:
+          selected.id === id
+            ? "linear-gradient(195deg, #ec407a, #d81b60)"
+            : undefined,
+        borderRadius: selected.id === id ? 10 : undefined,
+      }}
     >
       <Content onClick={() => onClick(id)}>
         <TextContainer>
           <Title>{title}</Title>
         </TextContainer>
-        {isToken ? <Close fill="black" onClick={() => onDelete(id)} /> : <></>}
+        {isToken ? <Close fill="#fff" onClick={() => onDelete(id)} /> : <></>}
       </Content>
     </Container>
   );
