@@ -10,9 +10,7 @@ const AuthScreen = ({ route }: any) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (route.params?.post === MAPS_ROUTE) {
-      navigate(LOGIN_ROUTE);
-    }
+    navigate(LOGIN_ROUTE);
   }, []);
 
   return (
