@@ -46,8 +46,9 @@ export const deleteProject = createAsyncThunk(
     const { data }: AxiosResponse = await http.delete("/project/delete", {
       data: { id: keyId },
     });
-
     console.log("/telegram/delete", data);
+
+    return data;
   }
 );
 

@@ -42,7 +42,7 @@ export type ProjectRes = {
 };
 
 export type ProjectCreateRes = {
-  message: "success";
+  message: string;
   project: ProjectItems;
   status: boolean;
 };

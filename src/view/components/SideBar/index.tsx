@@ -46,10 +46,6 @@ const SideBar = () => {
     // navigate(LOGIN_ROUTE);
   };
 
-  const onDelete = (id: number) => {
-    dispatch(thunks.projectNew2.deleteProject(id));
-  };
-
   console.log(projectId?.structure);
 
   const signOut = () => {
@@ -105,7 +101,7 @@ const SideBar = () => {
                 id={point.id}
                 // selected={point.selected}
                 onPlacemarkClick={onClickProject}
-                onDelete={onDelete}
+                // onDelete={onDelete}
               />
             ))}
           </Container>

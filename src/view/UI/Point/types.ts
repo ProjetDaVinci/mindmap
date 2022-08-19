@@ -6,5 +6,5 @@ export type PropsPoint = {
 
 export type PropsEvent = {
   onPlacemarkClick: (id: number) => void;
-  onDelete: (id: number) => void;
+  // onDelete: (id: number) => void;
 };

@@ -1,21 +1,24 @@
-import { useSelector } from "react-redux";
-import { selectors } from "../../../redux/ducks";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch } from "../../../redux";
+import { actions, selectors, thunks } from "../../../redux/ducks";
 import { Close } from "../icons";
 import { Container, Content, TextContainer, Title } from "./styles";
 import { PropsEvent, PropsPoint } from "./types";
 
-const Point = ({
-  title,
-  onDelete,
-  id,
-  onPlacemarkClick,
-}: PropsPoint & PropsEvent) => {
+const Point = ({ title, id, onPlacemarkClick }: PropsPoint & PropsEvent) => {
   const isToken = useSelector(selectors.auth.SelectToken);
   const selected = useSelector(selectors.selectedProject.SelectProject);
+  const dispatch = useDispatch<AppDispatch>();
 
   const onClick = (id: number) => {
     onPlacemarkClick(id);
   };
+
+  const onDelete = (id: number) => {
+    dispatch(thunks.projectNew2.deleteProject(id));
+    dispatch(actions.projectNew2.delete(id));
+  };
+
   return (
     <Container
       style={{
@@ -30,7 +33,15 @@ const Point = ({
         <TextContainer>
           <Title>{title}</Title>
         </TextContainer>
-        {isToken ? <Close fill="#fff" onClick={() => onDelete(id)} /> : <></>}
+        {isToken ? (
+          <Close
+            fill="#fff"
+            style={{ zIndex: 99999999 }}
+            onClick={() => onDelete(id)}
+          />
+        ) : (
+          <></>
+        )}
       </Content>
     </Container>
   );
